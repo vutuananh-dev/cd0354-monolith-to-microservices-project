@@ -1,0 +1,36 @@
+name: Build and push images to Docker Hub
+on:
+  workflow_dispatch:
+jobs:
+  build_push_feed:
+    uses: "./.github/workflows/build-image.yml"
+    secrets: inherit
+    with:
+      docker-file-path: ./udagram-api-feed
+      tag-name: ${{vars.registry}}/udagram-api-feed:latest
+
+  build_push_api:
+    uses: "./.github/workflows/build-image.yml"
+    secrets: inherit
+    with:
+      docker-file-path: "./udagram-api-user"
+      tag-name: ${{vars.registry}}/udagram-api-user:latest
+
+  build_push_frontend:
+    uses: "./.github/workflows/build-image.yml"
+    secrets: inherit
+    with:
+      docker-file-path: ./udagram-frontend
+      tag-name: ${{vars.registry}}/udagram-frontend:latest
+
+  build_push_reverseproxy:
+    uses: "./.github/workflows/build-image.yml"
+    secrets: inherit
+    with:
+      docker-file-path: ./udagram-reverseproxy
+      tag-name: ${{vars.registry}}/reverseproxy:latest
+  # trigger_k8s:
+  #   runs-on: ubuntu-latest
+  #   name: Trigger K8S
+  #   steps:
+  #     - run: 

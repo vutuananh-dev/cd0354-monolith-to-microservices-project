@@ -1,16 +1,16 @@
-name: Build image
+name: Build and push image
 on:
   workflow_call:
     inputs:
       docker-file-path:
         required: true
-        type: string 
+        type: string
       tag-name:
         required: true
         type: string
 jobs:
   build_push_image:
-    name: ${{docker-file-path}}
+    name: ${{inputs.docker-file-path}}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,8 +35,6 @@ jobs:
         uses: docker/build-push-action@v5
 
         with:
-          context: ${{docker-file-path}}
+          context: ${{inputs.docker-file-path}}
           push: true
-          tags: ${{tag-name}}
-
-
+          tags: ${{inputs.tag-name}}
